@@ -15,6 +15,23 @@ def plotData(X, y):
 
     plt.show()
 
+def plotDecisionBoundary(theta, X, y):
+    pos = X[numpy.where(y==1)[0]]
+    neg = X[numpy.where(y==0)[0]]
+
+    plt.plot(pos.T[0], pos.T[1], 'r+', label='Admitted')
+    plt.plot(neg.T[0], neg.T[1], 'ro', label='Not Admitted')
+
+    plt.ylabel('Exam 2')
+    plt.xlabel('Exam 1')
+
+    if X.shape[1] <= 3:
+        plot_x = numpy.array([numpy.min(X.T[0]) - 2, numpy.max(X.T[0]) + 2])
+        plot_y = (-1 / theta[2]) * (theta[1] * plot_x + theta[0])
+
+        plt.plot(plot_x, plot_y)
+
+    plt.show()
 
 def sigmoid(z):
     return 1 / (1 + numpy.exp(-z))
@@ -81,7 +98,7 @@ def main():
     else :
         print('Student not admitted')
 
-
+    plotDecisionBoundary(optimal_theta, X[:,1:3], y)
 
 if __name__ == '__main__':
     main()
