@@ -46,14 +46,14 @@ def main():
     
     theta = numpy.zeros((3, 1))
 
-    cost = computeCostMulti(X, y, theta)
+    _cost = computeCostMulti(X, y, theta)
     
     alpha = 0.1
     iterations = 1500
-    theta, J_history = gradientDescentMulti(X, y, theta, alpha, iterations)
+    optimal_theta, J_history = gradientDescentMulti(X, y, theta, alpha, iterations)
 
     plt.xlabel('iterations')
-    plt.ylabel('theta')
+    plt.ylabel('cost')
     plt.plot(range(iterations), J_history)
     plt.show()
 
@@ -66,12 +66,12 @@ def main():
 
     X_predict = numpy.column_stack((numpy.ones((data_house_norm.shape[0], 1)), data_house_norm))
 
-    predicted_gradient_desc = X_predict @ theta
+    predicted_gradient_desc = X_predict @ optimal_theta
     print('Estimated price with gradient descent for house of {} square feet with {} bedroom: {}'.format(house_sqr_feet, house_bdr_nr, predicted_gradient_desc))
 
-    theta = normalEquations(X, y)
+    optimal_theta = normalEquations(X, y)
 
-    predicted_gradient_desc = X_predict @ theta
+    predicted_gradient_desc = X_predict @ optimal_theta
     print('Estimated price for house with normal equations of {} square feet with {} bedroom: {}'.format(house_sqr_feet, house_bdr_nr, predicted_gradient_desc))
 
 
