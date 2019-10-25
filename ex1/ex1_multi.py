@@ -5,7 +5,7 @@ def featureNormalize(X):
     mu = numpy.mean(X, axis=0)
     sigma = numpy.std(X, axis=0, ddof=1)
 
-    t = numpy.ones((len(X), 1))
+    t = numpy.ones((X.shape[0], 1))
 
     X = (X - (t * mu)) / (t * sigma)
 
@@ -13,14 +13,14 @@ def featureNormalize(X):
 
 
 def computeCostMulti(X, y, theta):
-    m = len(y)
+    m = y.size
 
     return (1 / (2 * m)) * (X @ theta - y).T @ (X @ theta - y)
 
 def gradientDescentMulti(X, y, theta, alpha, iterations):
     J_history = numpy.zeros((iterations, 1))
 
-    m = len(y)
+    m = y.size
 
     for i in range(iterations):
         theta = theta - alpha * (1 / m) * (((X @ theta) - y).T @ X).T
@@ -38,7 +38,7 @@ def main():
     data = numpy.loadtxt('./ex1data2.txt', dtype='float', delimiter =',')
     X = data[:,:2]
     y = data[:,[2]]
-    m = len(y)
+    m = y.size
 
     X, mu, sigma = featureNormalize(X)
 
@@ -61,10 +61,10 @@ def main():
     house_bdr_nr = 3
 
     data_house = numpy.matrix([house_sqr_feet, house_bdr_nr])
-    t = numpy.ones((len(data_house), 1))
+    t = numpy.ones((data_house.shape[0], 1))
     data_house_norm = (data_house - (t * mu)) / (t * sigma)
 
-    X_predict = numpy.column_stack((numpy.ones((len(data_house_norm), 1)), data_house_norm))
+    X_predict = numpy.column_stack((numpy.ones((data_house_norm.shape[0], 1)), data_house_norm))
 
     predicted_gradient_desc = X_predict @ theta
     print('Estimated price with gradient descent for house of {} square feet with {} bedroom: {}'.format(house_sqr_feet, house_bdr_nr, predicted_gradient_desc))

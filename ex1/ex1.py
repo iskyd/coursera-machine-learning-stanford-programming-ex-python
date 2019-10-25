@@ -9,7 +9,7 @@ def plot(X, y, marker_type):
     plt.show()
 
 def computeCost(X, y, theta):
-    m = len(y)
+    m = y.size
     J = 0
 
     h = X @ theta
@@ -28,7 +28,7 @@ def computeCost(X, y, theta):
     return J
 
 def gradientDescent(X, y, theta, alpha, iterations):
-    m = len(y)
+    m = y.size
     J_history = numpy.zeros((iterations, 1))
     theta_history = numpy.zeros((iterations, 2))
 
@@ -44,7 +44,7 @@ def main():
     data = numpy.loadtxt('./ex1data1.txt', dtype='float', delimiter =',')
     X = data[:,[0]]
     y = data[:,[1]]
-    m = len(y)
+    m = y.size
 
     plot(X, y, marker_type='rx')
 
