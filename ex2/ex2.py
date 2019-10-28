@@ -100,5 +100,12 @@ def main():
 
     plotDecisionBoundary(optimal_theta, X[:,1:3], y)
 
+    p = sigmoid(X @ optimal_theta) >= 0.5
+    p = p.reshape((m, 1))
+    p = p.astype(int)
+
+    print('Train Accuracy: {}', numpy.mean(p == y) * 100)
+    print('Expected accuracy (approx): 89.0')
+
 if __name__ == '__main__':
     main()
