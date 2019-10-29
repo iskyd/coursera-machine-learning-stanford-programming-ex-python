@@ -63,18 +63,18 @@ def mapFeature(X1, X2):
     
     return out
 
-def costFunctionReg(theta, X, y, lmbd = 1):
+def costFunctionReg(theta, X, y, lambda_):
     m, n = X.shape
     theta = theta.reshape((n, 1))
 
     h_theta = sigmoid(X @ theta)
 
-    J = (1 / m) * (-y.T @ numpy.log(h_theta) - (1 - y).T @ numpy.log(1 - h_theta)) + (lmbd / (2 * m)) * (theta[1:theta.size]).T @ theta[1:theta.size]
+    J = (1 / m) * (-y.T @ numpy.log(h_theta) - (1 - y).T @ numpy.log(1 - h_theta)) + (lambda_ / (2 * m)) * (theta[1:theta.size]).T @ theta[1:theta.size]
 
     thetaZero = theta
     thetaZero[1] = 0
 
-    grad = ((1 / m) * (h_theta - y).T @ X) + lmbd / m * thetaZero.T
+    grad = ((1 / m) * (h_theta - y).T @ X) + lambda_ / m * thetaZero.T
 
     grad = grad.reshape((n, 1))
 
@@ -93,9 +93,9 @@ def main():
     m, n = X.shape
 
     initial_theta = numpy.zeros((n, 1))
-    lmbd = 1 # lambda
+    lambda_ = 1
 
-    J, grad = costFunctionReg(initial_theta, X, y, lmbd)
+    J, grad = costFunctionReg(initial_theta, X, y, lambda_)
     print(J)
     print(grad)
 
@@ -107,7 +107,7 @@ def main():
     result = optimize.minimize(
         fun = costFunctionReg, 
         x0 = initial_theta, 
-        args= (X, y), 
+        args= (X, y, lambda_), 
         method = 'TNC', 
         jac = True,
         options={'maxiter' : 400}
