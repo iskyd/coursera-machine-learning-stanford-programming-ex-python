@@ -99,9 +99,11 @@ def main():
     lmbd = 1 # lambda
 
     J = costFunctionReg(initial_theta, X, y, lmbd)
+    grad = gradientDescent(initial_theta, X, y, lmbd)
     print(J)
+    print(grad)
 
-    test_theta = initial_theta = numpy.ones((n, 1))
+    test_theta = numpy.ones((n, 1))
     J = costFunctionReg(test_theta, X, y, 10)
     grad = gradientDescent(test_theta, X, y, 10)
     print(J)
@@ -127,7 +129,7 @@ def main():
     p = p.reshape((m, 1))
     p = p.astype(int)
 
-    print('Train Accuracy: {}', numpy.mean(p == y) * 100)
+    print('Train Accuracy: {}'.format(numpy.mean(p == y) * 100))
     print('Expected accuracy (approx): 83.1')
 
 
