@@ -43,17 +43,10 @@ def costFunction(theta, X, y):
     h_theta = sigmoid(X @ theta)
     J = (1 / m) * ((-y.T @ numpy.log(h_theta)) - (1 - y).T @ numpy.log(1 - h_theta))
 
-    return J
-
-def gradientDescent(theta, X, y):
-    m, n = X.shape
-    theta = theta.reshape((n, 1))
-    
-    h_theta = sigmoid(X @ theta)
     grad = (1 / m) * (h_theta - y).T @ X
+    grad = grad.reshape((n, 1))
 
-    return grad.reshape((n, 1))
-
+    return J, grad
 
 def main():
     data = numpy.loadtxt('./ex2data1.txt', dtype='float', delimiter =',')
@@ -69,8 +62,7 @@ def main():
 
     initial_theta = numpy.zeros((n, 1))
 
-    J = costFunction(initial_theta, X, y)
-    _grad = gradientDescent(initial_theta, X, y)
+    J, _grad = costFunction(initial_theta, X, y)
 
     print(J)
 
@@ -79,7 +71,7 @@ def main():
         x0 = initial_theta, 
         args= (X, y), 
         method = 'TNC', 
-        jac = gradientDescent,
+        jac = True,
         options={'maxiter' : 400}
     )
 

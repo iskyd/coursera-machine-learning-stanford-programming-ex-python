@@ -64,25 +64,22 @@ def mapFeature(X1, X2):
     return out
 
 def costFunctionReg(theta, X, y, lmbd = 1):
-    m = y.size
-    h_theta = sigmoid(X @ theta)
-
-    J = (1 / m) * (-y.T @ numpy.log(h_theta) - (1 - y).T @ numpy.log(1 - h_theta)) + (lmbd / (2 * m)) * (theta[1:theta.size]).T @ theta[1:theta.size]
-
-    return J
-
-def gradientDescent(theta, X, y, lmbd = 1):
     m, n = X.shape
     theta = theta.reshape((n, 1))
 
     h_theta = sigmoid(X @ theta)
+
+    J = (1 / m) * (-y.T @ numpy.log(h_theta) - (1 - y).T @ numpy.log(1 - h_theta)) + (lmbd / (2 * m)) * (theta[1:theta.size]).T @ theta[1:theta.size]
 
     thetaZero = theta
     thetaZero[1] = 0
 
     grad = ((1 / m) * (h_theta - y).T @ X) + lmbd / m * thetaZero.T
 
-    return grad.reshape((n, 1))
+    grad = grad.reshape((n, 1))
+
+    return J, grad
+
 
 def main():
     data = numpy.loadtxt('./ex2data2.txt', dtype='float', delimiter =',')
@@ -98,14 +95,12 @@ def main():
     initial_theta = numpy.zeros((n, 1))
     lmbd = 1 # lambda
 
-    J = costFunctionReg(initial_theta, X, y, lmbd)
-    grad = gradientDescent(initial_theta, X, y, lmbd)
+    J, grad = costFunctionReg(initial_theta, X, y, lmbd)
     print(J)
     print(grad)
 
     test_theta = numpy.ones((n, 1))
-    J = costFunctionReg(test_theta, X, y, 10)
-    grad = gradientDescent(test_theta, X, y, 10)
+    J, grad = costFunctionReg(test_theta, X, y, 10)
     print(J)
     print(grad)
 
@@ -114,7 +109,7 @@ def main():
         x0 = initial_theta, 
         args= (X, y), 
         method = 'TNC', 
-        jac = gradientDescent,
+        jac = True,
         options={'maxiter' : 400}
     )
 
